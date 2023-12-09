@@ -1,20 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello Test!{% endblock %}
+{% block title %}ACME - Menu{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/mouka/OneDrive/Documents/EPSI/SN2/projet_e_commerce/acme/src/Controller/MenuController.php'|file_link(0) }}">src/Controller/MenuController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/mouka/OneDrive/Documents/EPSI/SN2/projet_e_commerce/acme/templates/menu/index.html.twig'|file_link(0) }}">templates/menu/index.html.twig</a></code></li>
-    </ul>
+<h1 class="text-center text-6xl">Nos Menus</h1>
+<div class="flex justify-center space-x-6 mt-10 text-center">
+    <a href="" class="rounded-3xl text-white font-medium bg-red-800 w-40 h-12 leading-[2.75rem]">Tout</a>
+    <a href="" class="rounded-3xl font-medium border-solid border-2 w-40 h-12 leading-[2.75rem]">Traditionnelle</a>
+    <a href="" class="rounded-3xl font-medium border-solid border-2 w-40 h-12 leading-[2.75rem]">Tex-Mex</a>
+    <a href="" class="rounded-3xl font-medium border-solid border-2 w-40 h-12 leading-[2.75rem]">Orientale</a>
+    <a href="" class="rounded-3xl font-medium border-solid border-2 w-40 h-12 leading-[2.75rem]">Americaine</a>
+</div>
+<div class="justify-center mt-16 w-4/5 mx-auto grid grid-cols-5">
+    {% for product in products %}
+    <div class="text-center border-solid border-2 rounded-xl overflow-hidden shadow-lg">
+        <img src="{{ product.image }}">
+        <p class="mt-2">{{ product.price }} euros</p>
+        <p class="mt-2 font-bold">{{ product.name }}</p>
+        <p class="mt-2 mb-5 w-5/6 mx-auto">{{ product.description }}</p>
+        <a class="">Ajouter au panier</a>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}
