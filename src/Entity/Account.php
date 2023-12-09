@@ -13,10 +13,7 @@ class Account
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $id_account = null;
-
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 50)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
@@ -25,24 +22,12 @@ class Account
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 50)]
     private ?string $role = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdAccount(): ?int
-    {
-        return $this->id_account;
-    }
-
-    public function setIdAccount(int $id_account): static
-    {
-        $this->id_account = $id_account;
-
-        return $this;
     }
 
     public function getName(): ?string
