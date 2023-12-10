@@ -32,4 +32,14 @@ class MenuController extends AbstractController
             'categories' => $this->categoryRepository->findAll(),
         ]);
     }
+
+    #[Route('/menu/{categ}', name: 'app_menu_category')]
+    public function category(string $categ): Response
+    {
+        return $this->render(
+            'menu/index.html.twig', [
+            'products' => $this->productRepository->findByCategory($categ),
+            'categories' => $this->categoryRepository->findAll(),
+        ]);
+    }
 }
