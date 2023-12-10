@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PanierController!{% endblock %}
+
+{% block body %}
+
+<h1 class="text-center text-6xl">Votre Panier</h1>
+<div class="justify-center mt-16 w-1/2 mx-auto grid grid-cols-3 gap-5">
+    {% set prixTotal = 0 %}
+    {% for product in products %}
+    <div class="text-center border-solid border-2 rounded-xl overflow-hidden">
+        <img src="{{ product.image }}">
+        <p class="mt-2 text-red-800 font-bold">{{ product.price }}€</p>
+        <p class="mt-2 font-bold">{{ product.name }}</p>
+        <p class="mt-2 mb-5 w-5/6 mx-auto">{{ product.description }}</p>
+    </div>
+    {% set prixTotal = prixTotal + product.price %}
+    {% endfor %}
+</div>
+
+{% endblock %}

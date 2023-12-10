@@ -29,6 +29,7 @@
     <a href="{{ path('app_menu_category', {categ: category.id}) }}" class="rounded-3xl font-medium border-solid border-2 w-40 h-12 leading-[2.75rem]">{{ category.name }}</a>
     {% endfor %}
 </div>
+
 {% set numProducts = 0 %}
 <div class="justify-center mt-16 w-4/5 mx-auto grid grid-cols-5 gap-5" id="productContainer">
     {% for product in products %}
@@ -38,11 +39,11 @@
     <div class="text-center border-solid border-2 rounded-xl overflow-hidden shadow-lg d{{ loop.index0 // 10 }} hidden">
     {% endif %}
         <img src="{{ product.image }}">
-        <p class="mt-2">{{ product.price }} euros</p>
+        <p class="mt-2 text-red-800 font-bold">{{ product.price }}€</p>
         <p class="mt-2 font-bold">{{ product.name }}</p>
         <p class="mt-2 mb-5 w-5/6 mx-auto">{{ product.description }}</p>
         {% if product.quantity > 0 %}
-        <a class="cursor-pointer font-medium rounded-3xl font-medium border-solid border-black border-2 leading-[2.75rem]">Ajouter au panier</a>
+        <a href="{{ path('app_menu', {'productChosen': '{{ product.id }}'}) }}" class="cursor-pointer font-medium rounded-3xl font-medium border-solid border-black border-2 leading-[2.75rem]">Ajouter au panier</a>
         {% else %}
         <p class="font-bold">Indisponible</p>
         {% endif %}
