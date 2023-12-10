@@ -1,19 +1,26 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}A propos{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="public/css/css.css">
 
-{% block body %}
- <section class=" mx-40 my-8">  <!-- peut etre mettre dans le body css = "bg-gray-100 -->
+</head>
+
+<body >
+    <section class=" mx-40 my-8">  <!-- peut etre mettre dans le body css = "bg-gray-100 -->
         <section class="flex text-center flex-col">
             <div class="">
                 <h1 class="gros-titre text-center hyphens">A Propos De Nous</h1>
                 <div class="flex justify-center mt-10 gap-12">
                     <div class="basis-1/2">
-                        <img src="../../img/gastronomie-luxe.webp" class="rounded-md h-full">
+                        <img src="public/img/gastronomie-luxe.webp" class="rounded-md h-full">
                     </div>
                     <div class="basis-1/2 text-left">
                         <h2 class="titre">Nous fournissons des aliments sains pour votre famille.</h2>
-                        <br>
                         <p class="text-lg">Notre histoire a commencé avec la vision de créer une expérience
                             gastronomique
                             unique qui
@@ -34,7 +41,6 @@
 
                 <div class="flex flex-col basis-1/2 text-left">
                     <h2 class="titre">Quelques informations </h2>
-                    <br>
                     <p class="text-lg">Nous pensons que le repas n'est pas seulement une question de nourriture, mais
                         aussi
                         d'expérience globale. Notre personnel, réputé pour sa chaleur et son dévouement,
@@ -62,14 +68,16 @@
                         </div>
                     </section>
                     <div class="h-[1200px]">
-                        <img class="h-[1200px]" src="../../img/gastronomie-luxe.webp">
+                        <img class="h-[1200px]" src="public/img/gastronomie-luxe.webp">
                     </div>
                 </div>
 
                 <div class="flex flex-col  basis-1/2">
-                    <img class="rounded-md h-full" src="../../img/gastronomie-luxe.webp">
+                    <img class="rounded-md h-full" src="public/img/gastronomie-luxe.webp">
                 </div>
             </div>
         </section>
     </section>
-{% endblock %}
+</body>
+
+</html>
