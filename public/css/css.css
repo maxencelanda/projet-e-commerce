@@ -1,0 +1,24 @@
+.img-top {
+    height: 380px;
+    width: 401px;
+}
+
+.hyphens {
+    hyphens: auto;
+}
+
+.gros-titre {
+    font-size: 75px;
+}
+
+.titre {
+    font-size: 40px;
+}
+
+body {
+    font-family: 'Playfair Display', serif;
+}
+
+.img-maybe-delete {
+    object-fit: cover;
+}
