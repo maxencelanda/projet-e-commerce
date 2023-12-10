@@ -43,6 +43,7 @@ class MenuController extends AbstractController
             'menu/index.html.twig', [
             'products' => $this->productRepository->findAll(),
             'categories' => $this->categoryRepository->findAll(),
+            'chosenCategory' => 'none',
         ]);
     }
 
@@ -53,6 +54,7 @@ class MenuController extends AbstractController
             'menu/index.html.twig', [
             'products' => $this->productRepository->findByCategory($categ),
             'categories' => $this->categoryRepository->findAll(),
+            'chosenCategory' => $this->categoryRepository->find($categ),
         ]);
     }
 }

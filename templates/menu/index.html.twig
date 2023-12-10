@@ -24,9 +24,17 @@
 {% block body %}
 <h1 class="text-center text-6xl">Nos Menus</h1>
 <div class="flex justify-center space-x-6 mt-10 text-center">
+    {% if chosenCategory == "none" %}
     <a href="{{ path('app_menu') }}" class="rounded-3xl text-white font-medium bg-red-800 w-40 h-12 leading-[2.75rem]">Tout</a>
+    {% else %}
+    <a href="{{ path('app_menu') }}" class="rounded-3xl font-medium border-solid border-2 w-40 h-12 leading-[2.75rem]">Tout</a>
+    {% endif %}
     {% for category in categories %}
+    {% if chosenCategory == category %}
+    <a href="{{ path('app_menu_category', {categ: category.id}) }}" class="rounded-3xl text-white font-medium bg-red-800 w-40 h-12 leading-[2.75rem]">{{ category.name }}</a>
+    {% else %}
     <a href="{{ path('app_menu_category', {categ: category.id}) }}" class="rounded-3xl font-medium border-solid border-2 w-40 h-12 leading-[2.75rem]">{{ category.name }}</a>
+    {% endif %}
     {% endfor %}
 </div>
 
