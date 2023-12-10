@@ -8,15 +8,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Product;
 use App\Repository\ProductRepository;
+use App\Entity\Category;
+use App\Repository\CategoryRepository;
 
 class MenuController extends AbstractController
 {
 
     private ProductRepository $productRepository;
+    private CategoryRepository $categoryRepository;
 
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository)
     {
         $this->productRepository = $productRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     #[Route('/menu', name: 'app_menu')]
@@ -25,6 +29,7 @@ class MenuController extends AbstractController
         return $this->render(
             'menu/index.html.twig', [
             'products' => $this->productRepository->findAll(),
+            'categories' => $this->categoryRepository->findAll(),
         ]);
     }
 }

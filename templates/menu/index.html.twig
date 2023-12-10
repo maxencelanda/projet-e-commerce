@@ -1,25 +1,60 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}ACME - Menu{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+
+<script>
+    function displayHide(div){
+        const productContainer = document.getElementById("productContainer");
+        const div1 = document.getElementsByClassName("d"+div);
+        for (let d of productContainer.children){
+            if (d.style.display != "none"){
+                d.style.display = "none";
+            }
+        }
+        for (let d of div1){
+            d.style.display = "block";
+        }
+    }
+</script>
+
+{% endblock %}
 
 {% block body %}
 <h1 class="text-center text-6xl">Nos Menus</h1>
 <div class="flex justify-center space-x-6 mt-10 text-center">
     <a href="" class="rounded-3xl text-white font-medium bg-red-800 w-40 h-12 leading-[2.75rem]">Tout</a>
-    <a href="" class="rounded-3xl font-medium border-solid border-2 w-40 h-12 leading-[2.75rem]">Traditionnelle</a>
-    <a href="" class="rounded-3xl font-medium border-solid border-2 w-40 h-12 leading-[2.75rem]">Tex-Mex</a>
-    <a href="" class="rounded-3xl font-medium border-solid border-2 w-40 h-12 leading-[2.75rem]">Orientale</a>
-    <a href="" class="rounded-3xl font-medium border-solid border-2 w-40 h-12 leading-[2.75rem]">Americaine</a>
+    {% for category in categories %}
+    <a href="" class="rounded-3xl font-medium border-solid border-2 w-40 h-12 leading-[2.75rem]">{{ category.name }}</a>
+    {% endfor %}
 </div>
-<div class="justify-center mt-16 w-4/5 mx-auto grid grid-cols-5">
+{% set numProducts = 0 %}
+<div class="justify-center mt-16 w-4/5 mx-auto grid grid-cols-5" id="productContainer">
     {% for product in products %}
-    <div class="text-center border-solid border-2 rounded-xl overflow-hidden shadow-lg">
+    {% if loop.index0 < 10 %}
+    <div class="text-center border-solid border-2 rounded-xl overflow-hidden shadow-lg d{{ loop.index0 % 10 }}">
+    {% else %}
+    <div class="text-center border-solid border-2 rounded-xl overflow-hidden shadow-lg d{{ loop.index0 % 10 }} hidden">
+    {% endif %}
         <img src="{{ product.image }}">
         <p class="mt-2">{{ product.price }} euros</p>
         <p class="mt-2 font-bold">{{ product.name }}</p>
         <p class="mt-2 mb-5 w-5/6 mx-auto">{{ product.description }}</p>
-        <a class="">Ajouter au panier</a>
+        {% if product.quantity > 0 %}
+        <a class="font-medium rounded-3xl font-medium border-solid border-black border-2 leading-[2.75rem]">Ajouter au panier</a>
+        {% else %}
+        <p class="font-bold">Indisponible</p>
+        {% endif %}
     </div>
+    {% set numProducts = numProducts + 1 %}
     {% endfor %}
 </div>
+
+<div class="text-xl border-solid border rounded-md shadow flex justify-center w-fit mx-auto mt-10">
+{% for i in range(0, (numProducts - 1) % 10) %}
+<a onclick="displayHide({{ i }})" class="cursor-pointer w-10 text-center border-l">{{ i + 1 }}</a>
+{% endfor %}
+</div>
+
 {% endblock %}
