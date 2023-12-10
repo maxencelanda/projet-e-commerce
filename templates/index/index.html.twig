@@ -1,20 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello IndexController!{% endblock %}
-
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/mouka/OneDrive/Documents/EPSI/SN2/projet_e_commerce/acme/src/Controller/IndexController.php'|file_link(0) }}">src/Controller/IndexController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/mouka/OneDrive/Documents/EPSI/SN2/projet_e_commerce/acme/templates/index/index.html.twig'|file_link(0) }}">templates/index/index.html.twig</a></code></li>
-    </ul>
+<div class="relative pb-14">
+    <img src="images/accueil.jpg" class="bg w-full">
+    <div class="absolute bottom-1 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center bg-white bg-opacity-50 rounded-lg">
+        <h1 class="text-7xl pb-6 mx-5">La<br>Gastronomie<br>à portée de<br>main</h1>
+        <h2 class="p-6 font-bold">Découvrez toutes nos spécialités culinaires</h2>
+        <button class="rounded-full bg-red-900 text-white p-2 m-2 font-bold">Commander</button>
+        <button class="rounded-full border border-black p-2 m-2 font-bold">Explorer le menu</button>
+    </div>
 </div>
+
+
+<h2 class="text-center text-4xl pb-14">Parcourez notre Menu</h2>
+
+  <div class="flex flex-row space-x-10 pl-56 pb-10">
+    <div class="border border-black text-center rounded-lg flex-col flex items-center justify-center">
+    <img class="w-28 h-28" src="images/traditionnelle.jpg">
+    <h3 class="text-xl font-bold p-5">Traditionnelle</h3>
+    <p class="p-5">Laissez-vous séduire par la<br>délicatesse de la cuisine<br>traditionnelle française.</p>
+    <a href="" class="text-red-600">Explorez le menu</a>
+  </div>
+  <div class="border border-black text-center rounded-lg flex-col flex items-center justify-center">
+    <img class="w-28 h-28" src="images/tex-mex.jpg">
+    <h3 class="text-xl font-bold p-5">Traditionnelle</h3>
+    <p class="p-5">Laissez-vous séduire par la<br>délicatesse de la cuisine<br>traditionnelle française.</p>
+    <a href="" class="text-red-600">Explorez le menu</a>
+  </div>
+  <div class="border border-black text-center rounded-lg flex-col flex items-center justify-center">
+    <img class="w-28 h-28" src="images/orientale.jpg">
+    <h3 class="text-xl font-bold p-5">Traditionnelle</h3>
+    <p class="p-5">Laissez-vous séduire par la<br>délicatesse de la cuisine<br>traditionnelle française.</p>
+    <a href="" class="text-red-600">Explorez le menu</a>
+  </div>
+  <div class="border border-black text-center rounded-lg flex-col flex items-center justify-center">
+    <img class="w-28 h-28" src="images/americain.jpg">
+    <h3 class="text-xl font-bold p-5">Traditionnelle</h3>
+    <p class="p-5">Laissez-vous séduire par la<br>délicatesse de la cuisine<br>traditionnelle française.</p>
+    <a href="" class="text-red-600">Explorez le menu</a>
+  </div>
+</div>
+
+<div class="flex pl-20">
+  <div class="grid grid-rows-3 grid-flow-col gap-4">
+    <div class="row-span-3 h-120">
+      <img src="images/chef.jpg" class="h-96 w-96 object-cover">
+    </div>
+    <div class="col-span-2 h-full">
+      <img src="images/crevettes.jpg" class="h-64 w-full object-cover">
+    </div>
+    <div class="row-span-2 col-span-2 h-full">
+      <img src="images/brochettes.jpg" class="h-64 w-full object-cover">
+    </div>
+  </div>
+</div>
+
+
+
+
+
 {% endblock %}
