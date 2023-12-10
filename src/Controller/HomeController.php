@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route(path: '/', name: 'index')]
+    #[Route(path: '/', name: 'index')] # page de base
     public function index(): Response
     {
         return $this->render('home/index.html.twig', [ #il retourne une reponse : le render
@@ -16,7 +16,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/accueil', name: 'accueil')]
+    #[Route(path: '/accueil', name: 'accueil')] # page pour le lien dans la nav
     public function accueil(): Response
     {
         return $this->render('home/index.html.twig', [ #il retourne une reponse : le render
