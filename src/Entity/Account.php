@@ -4,11 +4,10 @@ namespace App\Entity;
 
 use App\Repository\AccountRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
-class Account implements UserInterface, PasswordAuthenticatedUserInterface
+class Account
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,11 +23,9 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $role = null;
-
-    #[ORM\Column(type: 'json')]
-    private ?array $roles = [];
+    #[ORM\ManyToOne(inversedBy: 'accounts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Role $Role = null;
 
     public function getId(): ?int
     {
@@ -64,22 +61,6 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->email;
     }
 
-    public function getRoles(): array
-    {
-        $roles = $this->roles ?: [];
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
     public function getPassword(): string
     {
         return $this->password;
@@ -101,5 +82,17 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getRole(): ?Role
+    {
+        return $this->Role;
+    }
+
+    public function setRole(?Role $Role): static
+    {
+        $this->Role = $Role;
+
+        return $this;
     }
 }
