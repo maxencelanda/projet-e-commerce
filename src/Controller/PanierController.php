@@ -40,7 +40,8 @@ class PanierController extends AbstractController
         
         return $this->render(
             'panier/index.html.twig', [
-            'products' => $products,
+            'products' => $this->productRepository->findAll(),
+            //'products' => $products,
         ]);
     }
 }

@@ -51,7 +51,7 @@
         <p class="mt-2 font-bold">{{ product.name }}</p>
         <p class="mt-2 mb-5 w-5/6 mx-auto">{{ product.description }}</p>
         {% if product.quantity > 0 %}
-        <a href="{{ path('app_menu', {'productChosen': '{{ product.id }}'}) }}" class="cursor-pointer font-medium rounded-3xl font-medium border-solid border-black border-2 leading-[2.75rem]">Ajouter au panier</a>
+        <a href="{{ path('app_menu_plat', {idPlat: product.id }) }}" class="cursor-pointer font-medium rounded-3xl font-medium border-solid border-black border-2 leading-[2.75rem]">Ajouter au panier</a>
         {% else %}
         <p class="font-bold">Indisponible</p>
         {% endif %}

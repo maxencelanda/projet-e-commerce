@@ -57,4 +57,13 @@ class MenuController extends AbstractController
             'chosenCategory' => $this->categoryRepository->find($categ),
         ]);
     }
+
+    #[Route('/menu/plat/{idPlat}', name: 'app_menu_plat')]
+    public function plat(string $idPlat): Response
+    {
+        return $this->render(
+            'menu/plat.html.twig', [
+            'product' => $this->productRepository->find($idPlat),
+        ]);
+    }
 }
