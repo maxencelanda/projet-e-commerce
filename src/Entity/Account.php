@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\AccountRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
 class Account
 {
@@ -22,8 +23,9 @@ class Account
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $role = null;
+    #[ORM\ManyToOne(inversedBy: 'accounts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Role $Role = null;
 
     public function getId(): ?int
     {
@@ -35,7 +37,7 @@ class Account
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -47,33 +49,49 @@ class Account
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
         return $this;
     }
 
-    public function getRole(): ?string
+    public function getSalt(): ?string
     {
-        return $this->role;
+        return null;
     }
 
-    public function setRole(string $role): static
+    public function eraseCredentials(): void
     {
-        $this->role = $role;
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function getRole(): ?Role
+    {
+        return $this->Role;
+    }
+
+    public function setRole(?Role $Role): static
+    {
+        $this->Role = $Role;
 
         return $this;
     }

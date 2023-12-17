@@ -1,39 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
+{# templates/login/index.html.twig #}
+{% extends 'base.html.twig' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="public/css/css.css">
-
-</head>
-
-<body>
-    <form action="{{ path('security.login') }}"
+{# ... #}
+{% block title %}
+Page de connexion
+{% endblock %}
+{% block body %}
+  <form action="{{ path('login') }}"
         class="flex flex-col justify-center items-center border border-black rounded-md max-w-md mx-auto mt-32"
         method="post">
 
         <div class="pb-5">
-            <label for="email" class="form-label mt-4">Adresse email</label>
+            <label for="username" class="form-label mt-4">Adresse email</label>
             <input type="email"
                 class="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
-                id="email" placeholder="exemple@mail.com">
+                id="email" name="email" placeholder="exemple@mail.com">
             <small id="emailHelp" class="text-xs ">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-group">
             <label for="password" class="form-label mt-4">Password</label>
             <input type="password"
                 class="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
-                id="password" placeholder="*************">
+                id="password" name="password" placeholder="*************">
         </div>
 
         {# If you want to control the URL the user is redirected to on success
         <input type="hidden" name="_target_path" value="/account"> #}
 
-        <button type="submit">Connectez-vous</button>
+        <button class="border border-black rounded-md m-4 p-2"type="submit">Connectez-vous</button>
     </form>
-</body>
-
-</html>
+{% endblock %}
