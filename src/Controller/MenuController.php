@@ -34,31 +34,8 @@ class MenuController extends AbstractController
     #[Route('/menu', name: 'app_menu')]
     public function index(Request $request): Response
     {
-        /*$productChosen = $request->query->get("productChosen");
-        if ($productChosen && $this->accountRepository->find($id)){
-            Si pas de panier pour le user -> créer un panier avec le produit choisi
-            Sinon -> ajoute le produit choisi dans le panier
-        }*/
-        return $this->render(
-            'menu/index.html.twig',
-            [
-                'products' => $this->productRepository->findAll(),
-                'categories' => $this->categoryRepository->findAll(),
-                'chosenCategory' => 'none',
-            ]
-        );
-    }
-
-    #[Route('/menu/{categ}', name: 'app_menu_category')]
-    public function category(string $categ): Response
-    {
-        return $this->render(
-            'menu/index.html.twig',
-            [
-                'products' => $this->productRepository->findByCategory($categ),
-                'categories' => $this->categoryRepository->findAll(),
-                'chosenCategory' => $this->categoryRepository->find($categ),
-            ]
-        );
+        return $this->render('menu/index.html.twig', [
+            'controller_name' => 'MenuController',
+        ]);
     }
 }
