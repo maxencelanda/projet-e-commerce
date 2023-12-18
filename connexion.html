@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>Page de connexion</title>
+</head>
+<body class="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div class="bg-white p-10 rounded-lg shadow-md w-80">
+        <h1 class="text-3xl font-bold mb-10 text-gray-900">Connectez-vous</h1>
+        <form action="{{ path('security.login') }}" method="post">
+            <div class="mb-6">
+                <label class="block mb-2 text-sm text-gray-600" for="email">Adresse mail</label>
+                <input class="w-full p-2 border border-gray-300 rounded-md" type="email" id="email" name="email" placeholder="exemple@mail.com">
+            </div>
+            <div class="mb-6">
+                <label class="block mb-2 text-sm text-gray-600" for="password">Password</label>
+                <input class="w-full p-2 border border-gray-300 rounded-md" type="password" id="password" name="password">
+            </div>
+            <button type="submit" class="w-full py-2 px-4 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm">Inscrivez-vous</button>
+        </form>
+    </div>
+</body>
+</html>
