@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Account;
-use App\Form\CheckAccountType;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\AccountRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,13 +18,13 @@ class HomeController extends AbstractController
     public function index(Request $request, AccountRepository $accountRepository): Response
     {
         $user = null;
-        dump($request);
+        //dump($request);
         if ($request->request->count() > 0) {
             $user = new Account();
             $email = $request->request->get('email');
             $password = $request->request->get('password');
 
-            // Vérifier si les valeurs existent dans la base de données
+            // Vérifie si les valeurs existent dans la base de données
             $user = $accountRepository->findOneBy(['email' => $email, 'password' => $password]);
         }
         if ($user) {
@@ -34,6 +34,34 @@ class HomeController extends AbstractController
                 'controller_name' => 'HomeController',
             ]);
         }
+    }
+    #[Route(path: '/register', name: 'register')]
+    public function register(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user = null;
+        if ($request->request->count() > 0) {
+            $password = $request->request->get('password');
+            $checkPassword = $request->request->get('check_password');
+            if ($password == $checkPassword) {
+                $user = new Account();
+                $user->setName($request->request->get('name'))
+                    ->setEmail($request->request->get('email'))
+                    ->setPassword($request->request->get('email'))
+                    ->setRole(null);
+
+                $entityManager->persist($user);
+
+                // actually executes the queries (i.e. the INSERT query)
+                $entityManager->flush();
+            } else {
+                return $this->render('login/register.html.twig', [
+                    'controller_name' => 'HomeController',
+                ]);
+            }
+        }
+        return $this->render('login/register.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
     }
 
     #[Route(path: '/accueil', name: 'accueil')] # page de base
