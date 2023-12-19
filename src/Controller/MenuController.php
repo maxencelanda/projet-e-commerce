@@ -22,6 +22,7 @@ class MenuController extends AbstractController
     private CategoryRepository $categoryRepository;
     private AccountRepository $accountRepository;
     private CartRepository $cartRepository;
+    
 
     public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, AccountRepository $accountRepository, CartRepository $cartRepository)
     {
@@ -34,8 +35,31 @@ class MenuController extends AbstractController
     #[Route('/menu', name: 'app_menu')]
     public function index(Request $request): Response
     {
-        return $this->render('menu/index.html.twig', [
-            'controller_name' => 'MenuController',
+        return $this->render(
+            'menu/index.html.twig', [
+            'products' => $this->productRepository->findAll(),
+            'categories' => $this->categoryRepository->findAll(),
+            'chosenCategory' => 'none',
+        ]);
+    }
+
+    #[Route('/menu/{categ}', name: 'app_menu_category')]
+    public function category(string $categ): Response
+    {
+        return $this->render(
+            'menu/index.html.twig', [
+            'products' => $this->productRepository->findByCategory($categ),
+            'categories' => $this->categoryRepository->findAll(),
+            'chosenCategory' => $this->categoryRepository->find($categ),
+        ]);
+    }
+
+    #[Route('/menu/plat/{idPlat}', name: 'app_menu_plat')]
+    public function plat(string $idPlat): Response
+    {
+        return $this->render(
+            'menu/plat.html.twig', [
+            'product' => $this->productRepository->find($idPlat),
         ]);
     }
 }

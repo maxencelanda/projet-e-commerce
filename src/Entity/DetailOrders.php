@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DetailOrdersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DetailOrdersRepository::class)]
@@ -13,42 +15,58 @@ class DetailOrders
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'detailOrders', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Product $id_product = null;
+    private ?Orders $orders = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Orders $id_orders = null;
+    #[ORM\ManyToMany(targetEntity: Product::class)]
+    private Collection $product;
 
     #[ORM\Column]
     private ?int $quantity = null;
+
+    public function __construct()
+    {
+        $this->product = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIdProduct(): ?Product
+    public function getOrders(): ?Orders
     {
-        return $this->id_product;
+        return $this->orders;
     }
 
-    public function setIdProduct(Product $id_product): static
+    public function setOrders(Orders $orders): static
     {
-        $this->id_product = $id_product;
+        $this->orders = $orders;
 
         return $this;
     }
 
-    public function getIdOrders(): ?Orders
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProduct(): Collection
     {
-        return $this->id_orders;
+        return $this->product;
     }
 
-    public function setIdOrders(Orders $id_orders): static
+    public function addProduct(Product $product): static
     {
-        $this->id_orders = $id_orders;
+        if (!$this->product->contains($product)) {
+            $this->product->add($product);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): static
+    {
+        $this->product->removeElement($product);
 
         return $this;
     }

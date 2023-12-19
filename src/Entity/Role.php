@@ -15,10 +15,10 @@ class Role
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'Role', targetEntity: Account::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: Account::class)]
     private Collection $accounts;
 
     public function __construct()

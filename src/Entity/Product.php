@@ -28,9 +28,9 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Category $id_category = null;
+    private ?Category $category = null;
 
     public function getId(): ?int
     {
@@ -97,14 +97,14 @@ class Product
         return $this;
     }
 
-    public function getIdCategory(): ?Category
+    public function getCategory(): ?Category
     {
-        return $this->id_category;
+        return $this->category;
     }
 
-    public function setIdCategory(Category $id_category): static
+    public function setCategory(?Category $category): static
     {
-        $this->id_category = $id_category;
+        $this->category = $category;
 
         return $this;
     }

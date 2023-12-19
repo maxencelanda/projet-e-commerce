@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CartRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CartRepository::class)]
@@ -13,42 +15,35 @@ class Cart
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'cart', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Account $id_account = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Product $id_product = null;
+    private ?Account $account = null;
 
     #[ORM\Column]
     private ?int $quantity = null;
+
+    #[ORM\ManyToMany(targetEntity: Product::class)]
+    private Collection $product;
+
+    public function __construct()
+    {
+        $this->product = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIdAccount(): ?Account
+    public function getAccount(): ?Account
     {
-        return $this->id_account;
+        return $this->account;
     }
 
-    public function setIdAccount(Account $id_account): static
+    public function setAccount(Account $account): static
     {
-        $this->id_account = $id_account;
-
-        return $this;
-    }
-
-    public function getIdProduct(): ?Product
-    {
-        return $this->id_product;
-    }
-
-    public function setIdProduct(Product $id_product): static
-    {
-        $this->id_product = $id_product;
+        $this->account = $account;
 
         return $this;
     }
@@ -64,4 +59,29 @@ class Cart
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProduct(): Collection
+    {
+        return $this->product;
+    }
+
+    public function addProduct(Product $product): static
+    {
+        if (!$this->product->contains($product)) {
+            $this->product->add($product);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): static
+    {
+        $this->product->removeElement($product);
+
+        return $this;
+    }
+
 }
