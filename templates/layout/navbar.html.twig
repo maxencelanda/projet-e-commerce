@@ -4,8 +4,8 @@
         <div class="flex  justify-between px-8">
             <a class="p-4 text-center" href="{{path('accueil')}}">Accueil</a>
             <a class="p-4" href="{{path('aPropos')}}">A propos</a>
-            <a class="p-4">Menu</a>
-            <button class="border-black border-2 rounded-full px-5 tracking-wide text-md mr-2">Panier</button>
-            <button class="border-black border-2 rounded-full px-5 tracking-wide text-md mr-2">Mon profil</button>
+            <a class="p-4" href="{{ path('app_menu') }}">Menu</a>
+            <a class="border-black border-2 rounded-full px-5 tracking-wide text-md mr-2" href="{{ path('app_panier') }}">Panier</a>
+            <a class="border-black border-2 rounded-full px-5 tracking-wide text-md mr-2" href="{{ path('login') }}">Mon profil</a>
         </div>
     </nav>
