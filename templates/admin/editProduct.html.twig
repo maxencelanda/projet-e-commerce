@@ -4,15 +4,15 @@
 
 {% block body %}
 <div class="grid grid-cols-5 mx-auto">
-    <div class="bg-gradient-to-r from-red-800 to-neutral-100 text-white h-[100vh] text-2xl font-bold">
+    <div class="bg-neutral-400 text-white h-[100vh] text-2xl font-bold">
         <a href="{{ path('app_admin_create_product') }}" class="block my-10 mx-5">Creer</a>
-        <a href="{{ path('app_admin_create_product') }}" class="block my-10 mx-5">Modifier</a>
-        <a href="{{ path('app_admin_create_product') }}" class="block my-10 mx-5">Supprimer</a>
+        <a href="{{ path('app_admin_edit_product') }}" class="block my-10 mx-5">Modifier</a>
+        <a href="{{ path('app_admin_delete_product') }}" class="block my-10 mx-5">Supprimer</a>
     </div>
     <div class="col-span-4 mx-5">
         <div class="flex justify-center my-5 mx-auto text-2xl gap-10">
-            <a href="" class="cursor-default font-bold">Produit</a>
-            <a href="">Categorie</a>
+            <a href="{{ path('app_admin_edit_product') }}" class="cursor-default font-bold">Produit</a>
+            <a href="{{ path('app_admin_edit_category') }}">Categorie</a>
         </div>
         <div id="produit" class="my-10">
             {{ form(form) }}
