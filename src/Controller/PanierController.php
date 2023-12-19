@@ -27,16 +27,18 @@ class PanierController extends AbstractController
     }
 
     #[Route('/panier', name: 'app_panier')]
-    public function index(int $id): Response
+    public function index(/*int $id*/): Response
     {
         $products = [];
         
+        /*
         $cart = $this->cartRepository->findByUser($id);
         if ($cart){
             foreach($cart as $product){
                 array_push($products, $this->productRepository->find($cart->getIdProduct()));
             }
         }
+        */
         
         
         return $this->render(

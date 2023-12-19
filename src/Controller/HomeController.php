@@ -14,11 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route(path: '/', name: 'login')]
+    #[Route(path: '/login', name: 'login')]
     public function index(Request $request, AccountRepository $accountRepository): Response
     {
         $user = null;
-        dump($request);
         if ($request->request->count() > 0) {
             $user = new Account();
             $email = $request->request->get('email');
