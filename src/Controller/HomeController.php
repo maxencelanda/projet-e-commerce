@@ -52,7 +52,6 @@ class HomeController extends AbstractController
     #[Route(path: '/aPropos', name: 'aPropos')]
     public function aPropos(): Response
     {
-        $account = null;
         return $this->render('home/aPropos.html.twig', [
             'controller_name' => 'HomeController',
         ]);
@@ -76,11 +75,7 @@ class HomeController extends AbstractController
             $account->setRole($role);
             $entityManager->persist($account);
             $entityManager->flush();
-            $cart = new Cart();
-            $cart->setAccount($account);
-            $cart->setQuantity(0);
-            $account->setCart($cart);
-            $entityManager->flush();
+            $_SESSION["id"] = $account->getId();
             $_SESSION["user"] = $account->getName();
             $_SESSION["role"] = $role->getName();
             return $this->redirectToRoute('accueil');

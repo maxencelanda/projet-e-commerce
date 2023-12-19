@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Product;
 use App\Repository\ProductRepository;
@@ -14,6 +15,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\AccountRepository;
 use App\Repository\CartRepository;
 use App\Entity\Cart;
+use Doctrine\ORM\EntityManager;
 
 class MenuController extends AbstractController
 {
@@ -63,15 +65,30 @@ class MenuController extends AbstractController
     }
 
     #[Route('/menu/plat/{idPlat}', name: 'app_menu_plat')]
-    public function plat(string $idPlat, Request $request): Response
+    public function plat(string $idPlat, Request $request, EntityManagerInterface $entityManager, ProductRepository $productRepository, AccountRepository $accountRepository): Response
     {
         $session = $request->getSession();
         if (!$session->has('user')){
             return $this->redirectToRoute('accueil');
         }
+        $product = $productRepository->find($idPlat);
+        $account = $accountRepository->find($session->get('id'));
+        $success = '';
+        if ($request->request->get('quantite') && $product && $account){
+            if ($request->request->get('quantite')){
+                $cart = new Cart();
+                $cart->setAccount($account);
+                $cart->setQuantity($request->get('quantite'));
+                $account->setCart($cart);
+                $cart->addProduct($product);
+                $entityManager->flush();
+                $success = "Ajouté au panier";
+            }
+        }
         return $this->render(
             'menu/plat.html.twig', [
             'product' => $this->productRepository->find($idPlat),
+            'success' => $success,
         ]);
     }
 }

@@ -15,9 +15,6 @@ class Cart
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'cart', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Account $account = null;
 
     #[ORM\Column]
     private ?int $quantity = null;
@@ -25,27 +22,18 @@ class Cart
     #[ORM\ManyToMany(targetEntity: Product::class)]
     private Collection $product;
 
+    #[ORM\ManyToOne(inversedBy: 'carts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Account $account = null;
+
     public function __construct()
     {
         $this->product = new ArrayCollection();
     }
 
-
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getAccount(): ?Account
-    {
-        return $this->account;
-    }
-
-    public function setAccount(Account $account): static
-    {
-        $this->account = $account;
-
-        return $this;
     }
 
     public function getQuantity(): ?int
@@ -80,6 +68,18 @@ class Cart
     public function removeProduct(Product $product): static
     {
         $this->product->removeElement($product);
+
+        return $this;
+    }
+
+    public function getAccount(): ?Account
+    {
+        return $this->account;
+    }
+
+    public function setAccount(?Account $account): static
+    {
+        $this->account = $account;
 
         return $this;
     }
