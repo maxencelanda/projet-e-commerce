@@ -7,8 +7,8 @@ Page d'inscription
 {% endblock %}
 {% block body %}
 <h1 class="text-center text-7xl">Inscrivez vous <br> Maintenant</h1>
-  <form action="{{ path('login') }}"
-        class="flex flex-col justify-start border shadow-xl rounded-md h-80 mx-auto mt-8 p-8"
+  <form action="{{ path('register') }}"
+        class="flex flex-col justify-start border shadow-xl rounded-md mx-auto mt-8 p-8"
         style="width: 39rem;"
         method="post">
 
@@ -39,6 +39,7 @@ Page d'inscription
                 id="check_password" name="check_password" placeholder="*************">
         </div>
 
-        <button class="border bg-red-500 text-white rounded-full m-4 p-2"type="submit">Connectez-vous</button>
+        <button class="border bg-red-500 text-white rounded-full m-4 p-2"type="submit">Créer un compte</button>
+        <a href="{{path('login')}}">Se connecter</a>
     </form>
 {% endblock %}
