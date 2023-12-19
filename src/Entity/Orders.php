@@ -13,23 +13,43 @@ class Orders
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Account $id_account = null;
+    private ?Account $account = null;
+
+    #[ORM\OneToOne(mappedBy: 'orders', cascade: ['persist', 'remove'])]
+    private ?DetailOrders $detailOrders = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIdAccount(): ?Account
+    public function getAccount(): ?Account
     {
-        return $this->id_account;
+        return $this->account;
     }
 
-    public function setIdAccount(Account $id_account): static
+    public function setAccount(?Account $account): static
     {
-        $this->id_account = $id_account;
+        $this->account = $account;
+
+        return $this;
+    }
+
+    public function getDetailOrders(): ?DetailOrders
+    {
+        return $this->detailOrders;
+    }
+
+    public function setDetailOrders(DetailOrders $detailOrders): static
+    {
+        // set the owning side of the relation if necessary
+        if ($detailOrders->getOrders() !== $this) {
+            $detailOrders->setOrders($this);
+        }
+
+        $this->detailOrders = $detailOrders;
 
         return $this;
     }

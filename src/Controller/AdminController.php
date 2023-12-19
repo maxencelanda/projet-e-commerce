@@ -13,7 +13,10 @@ use App\Entity\Category;
 use App\Form\CreateProductType;
 use App\Form\CreateCategoryType;
 use App\Form\DeleteProductType;
+use App\Form\DeleteCategoryType;
+use App\Form\EditCategoryType;
 use App\Form\EditProductType;
+use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 
 class AdminController extends AbstractController
@@ -44,60 +47,45 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/edit/product', name: 'app_admin_edit_product')]
-    public function editProduct(Request $request, EntityManagerInterface $entityManager): Response
+    public function editProduct(Request $request, EntityManagerInterface $entityManager, ProductRepository $productRepository): Response
     {
         
-        $product = new Product();
-        $form = $this->createForm(EditProductType::class, $product, array('method' => 'PUT'));
+        $products = $productRepository->findAll();
+
+        return $this->render('admin/editProduct.html.twig', [
+            'products' => $products,
+            'success' => '',
+        ]);
+    }
+
+    #[Route('/admin/edit/product/{id}', name: 'app_admin_edit_product_id')]
+    public function editProductId(Request $request, EntityManagerInterface $entityManager, $id): Response
+    {
+        
+        $form = $this->createForm(EditProductType::class);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() and $form->isValid()){
-            $productData = $form->getData();
-            var_dump($productData);
-            $product = $entityManager->getRepository(Product::class)->findByName    ($productData->getId());
+            $product = $entityManager->getRepository(Product::class)->find($id);
             if (!$product) {
                 throw $this->createNotFoundException(
-                    'No product found for id '.$productData->getId()
+                    'No product found for id '.$id
                 );
             }
-            $product->setName($productData->getName());
-            $product->setPrice($productData->getPrice());
-            $product->setQuantity($productData->getQuantity());
-            $product->setDescription($productData->getDescription());
-            $product->setImage($productData->getImage());
-            $product->setIdCategory($productData->getIdCategory());
+            $product->setName($form->get('name')->getData());
+            $product->setPrice($form->get('price')->getData());
+            $product->setQuantity($form->get('quantity')->getData());
+            $product->setDescription($form->get('description')->getData());
+            $product->setImage($form->get('image')->getData());
+            $product->setCategory($form->get('category')->getData());
             $entityManager->flush();
-            return $this->render('admin/editProduct.html.twig', [
+            return $this->render('admin/editProductRedirect.html.twig', [
                 'form' => $form,
                 'success' => "Produit modifié avec succès",
             ]);
         }
 
-        return $this->render('admin/editProduct.html.twig', [
-            'form' => $form,
-            'success' => '',
-        ]);
-    }
-
-    #[Route('/admin/create/category', name: 'app_admin_create_category')]
-    public function createCategory(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        
-        $category = new Category();
-        $form = $this->createForm(CreateCategoryType::class, $category);
-        $form->handleRequest($request);
-        
-        if ($form->isSubmitted() and $form->isValid()){
-            $category = $form->getData();
-            $entityManager->persist($category);
-            $entityManager->flush();
-            return $this->render('admin/createCategory.html.twig', [
-                'form' => $form,
-                'success' => "Produit créé avec succès",
-            ]);
-        }
-
-        return $this->render('admin/createCategory.html.twig', [
+        return $this->render('admin/editProductRedirect.html.twig', [
             'form' => $form,
             'success' => '',
         ]);
@@ -127,38 +115,66 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/edit/category', name: 'app_admin_edit_category')]
-    public function editCategory(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/admin/create/category', name: 'app_admin_create_category')]
+    public function createCategory(Request $request, EntityManagerInterface $entityManager): Response
     {
         
-        $product = new Product();
-        $form = $this->createForm(EditProductType::class, $product, array('method' => 'PUT'));
+        $category = new Category();
+        $form = $this->createForm(CreateCategoryType::class, $category);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() and $form->isValid()){
-            $productData = $form->getData();
-            var_dump($productData);
-            $product = $entityManager->getRepository(Product::class)->findByName    ($productData->getId());
-            if (!$product) {
+            $category = $form->getData();
+            $entityManager->persist($category);
+            $entityManager->flush();
+            return $this->render('admin/createCategory.html.twig', [
+                'form' => $form,
+                'success' => "Produit créé avec succès",
+            ]);
+        }
+
+        return $this->render('admin/createCategory.html.twig', [
+            'form' => $form,
+            'success' => '',
+        ]);
+    }
+
+    #[Route('/admin/edit/category/{id}', name: 'app_admin_edit_category_id')]
+    public function editCategoryId(Request $request, EntityManagerInterface $entityManager, $id): Response
+    {
+        
+        $form = $this->createForm(EditCategoryType::class);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() and $form->isValid()){
+            $category = $entityManager->getRepository(Category::class)->find($id);
+            if (!$category) {
                 throw $this->createNotFoundException(
-                    'No product found for id '.$productData->getId()
+                    'No product found for id '.$id
                 );
             }
-            $product->setName($productData->getName());
-            $product->setPrice($productData->getPrice());
-            $product->setQuantity($productData->getQuantity());
-            $product->setDescription($productData->getDescription());
-            $product->setImage($productData->getImage());
-            $product->setIdCategory($productData->getIdCategory());
+            $category->setName($form->get('name')->getData());
             $entityManager->flush();
-            return $this->render('admin/editProduct.html.twig', [
+            return $this->render('admin/editProductRedirect.html.twig', [
                 'form' => $form,
                 'success' => "Produit modifié avec succès",
             ]);
         }
 
-        return $this->render('admin/editProduct.html.twig', [
+        return $this->render('admin/editProductRedirect.html.twig', [
             'form' => $form,
+            'success' => '',
+        ]);
+    }
+
+    #[Route('/admin/edit/category', name: 'app_admin_edit_category')]
+    public function editCategory(Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
+    {
+        
+        $categories = $categoryRepository->findAll();
+
+        return $this->render('admin/editCategory.html.twig', [
+            'categories' => $categories,
             'success' => '',
         ]);
     }
@@ -167,21 +183,21 @@ class AdminController extends AbstractController
     public function deleteCategory(Request $request, EntityManagerInterface $entityManager): Response
     {
         
-        $form = $this->createForm(DeleteProductType::class);
+        $form = $this->createForm(DeleteCategoryType::class);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() and $form->isValid()){
             $productData = $form->get('id')->getData();
-            $product = $entityManager->getRepository(Product::class)->find($productData);
+            $product = $entityManager->getRepository(Category::class)->find($productData);
             $entityManager->remove($product);
             $entityManager->flush();
-            return $this->render('admin/deleteProduct.html.twig', [
+            return $this->render('admin/deleteCategory.html.twig', [
                 'form' => $form,
-                'success' => "Produit supprimé avec succès",
+                'success' => "Categorie supprimée avec succès",
             ]);
         }
 
-        return $this->render('admin/deleteProduct.html.twig', [
+        return $this->render('admin/deleteCategory.html.twig', [
             'form' => $form,
             'success' => '',
         ]);

@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
+use App\Repository\RoleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CategoryRepository::class)]
-class Category
+#[ORM\Entity(repositoryClass: RoleRepository::class)]
+class Role
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,12 +18,12 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
-    private Collection $products;
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: Account::class)]
+    private Collection $accounts;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->accounts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -44,29 +44,29 @@ class Category
     }
 
     /**
-     * @return Collection<int, Product>
+     * @return Collection<int, Account>
      */
-    public function getProducts(): Collection
+    public function getAccounts(): Collection
     {
-        return $this->products;
+        return $this->accounts;
     }
 
-    public function addProduct(Product $product): static
+    public function addAccount(Account $account): static
     {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
-            $product->setCategory($this);
+        if (!$this->accounts->contains($account)) {
+            $this->accounts->add($account);
+            $account->setRole($this);
         }
 
         return $this;
     }
 
-    public function removeProduct(Product $product): static
+    public function removeAccount(Account $account): static
     {
-        if ($this->products->removeElement($product)) {
+        if ($this->accounts->removeElement($account)) {
             // set the owning side to null (unless already changed)
-            if ($product->getCategory() === $this) {
-                $product->setCategory(null);
+            if ($account->getRole() === $this) {
+                $account->setRole(null);
             }
         }
 

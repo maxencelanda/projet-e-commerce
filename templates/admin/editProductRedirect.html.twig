@@ -15,9 +15,7 @@
             <a href="{{ path('app_admin_edit_category') }}">Categorie</a>
         </div>
         <div id="produit" class="my-10">
-            {% for product in products %}
-                <a href="{{ path('app_admin_edit_product_id', {id: product.id }) }}" class="underline">{{ product.name }}</a><br/>
-            {% endfor %}
+            {{ form(form) }}
         </div>
         {% if success %}
             <p>{{ success }}</p>

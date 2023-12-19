@@ -20,7 +20,7 @@ class CreateProductType extends AbstractType
             ->add('quantity')
             ->add('description')
             ->add('image')
-            ->add('id_category', EntityType::class, ["class" => Category::class, "choice_label" => "name",])
+            ->add('category', EntityType::class, ["class" => Category::class, "choice_label" => "name",])
             ->add('Creer', SubmitType::class)
         ;
     }

@@ -2,47 +2,60 @@
 
 namespace App\Entity;
 
-use App\Repository\DetailOrdersRepository;
+use App\Repository\CartRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: DetailOrdersRepository::class)]
-class DetailOrders
+#[ORM\Entity(repositoryClass: CartRepository::class)]
+class Cart
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'detailOrders', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'cart', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Orders $orders = null;
-
-    #[ORM\ManyToMany(targetEntity: Product::class)]
-    private Collection $product;
+    private ?Account $account = null;
 
     #[ORM\Column]
     private ?int $quantity = null;
+
+    #[ORM\ManyToMany(targetEntity: Product::class)]
+    private Collection $product;
 
     public function __construct()
     {
         $this->product = new ArrayCollection();
     }
 
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getOrders(): ?Orders
+    public function getAccount(): ?Account
     {
-        return $this->orders;
+        return $this->account;
     }
 
-    public function setOrders(Orders $orders): static
+    public function setAccount(Account $account): static
     {
-        $this->orders = $orders;
+        $this->account = $account;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }
@@ -71,15 +84,4 @@ class DetailOrders
         return $this;
     }
 
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): static
-    {
-        $this->quantity = $quantity;
-
-        return $this;
-    }
 }

@@ -22,6 +22,7 @@ class MenuController extends AbstractController
     private CategoryRepository $categoryRepository;
     private AccountRepository $accountRepository;
     private CartRepository $cartRepository;
+    
 
     public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, AccountRepository $accountRepository, CartRepository $cartRepository)
     {
@@ -34,11 +35,6 @@ class MenuController extends AbstractController
     #[Route('/menu', name: 'app_menu')]
     public function index(Request $request): Response
     {
-        /*$productChosen = $request->query->get("productChosen");
-        if ($productChosen && $this->accountRepository->find($id)){
-            Si pas de panier pour le user -> créer un panier avec le produit choisi
-            Sinon -> ajoute le produit choisi dans le panier
-        }*/
         return $this->render(
             'menu/index.html.twig', [
             'products' => $this->productRepository->findAll(),
