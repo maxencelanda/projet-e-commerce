@@ -35,6 +35,10 @@ class MenuController extends AbstractController
     #[Route('/menu', name: 'app_menu')]
     public function index(Request $request): Response
     {
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
         return $this->render(
             'menu/index.html.twig', [
             'products' => $this->productRepository->findAll(),
@@ -44,8 +48,12 @@ class MenuController extends AbstractController
     }
 
     #[Route('/menu/{categ}', name: 'app_menu_category')]
-    public function category(string $categ): Response
+    public function category(string $categ, Request $request): Response
     {
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
         return $this->render(
             'menu/index.html.twig', [
             'products' => $this->productRepository->findByCategory($categ),
@@ -55,8 +63,12 @@ class MenuController extends AbstractController
     }
 
     #[Route('/menu/plat/{idPlat}', name: 'app_menu_plat')]
-    public function plat(string $idPlat): Response
+    public function plat(string $idPlat, Request $request): Response
     {
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
         return $this->render(
             'menu/plat.html.twig', [
             'product' => $this->productRepository->find($idPlat),

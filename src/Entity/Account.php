@@ -6,10 +6,11 @@ use App\Repository\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
-class Account
+class Account implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -97,14 +98,14 @@ class Account
         // $this->plainPassword = null;
     }
   
-    public function getRole(): ?Role
+    public function getRoles(): ?Role
     {
-        return $this->Role;
+        return $this->role;
     }
 
     public function setRole(?Role $role): static
     {
-        $this->Role = $Role;
+        $this->role = $role;
 
         return $this;
     }

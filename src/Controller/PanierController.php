@@ -11,6 +11,7 @@ use App\Repository\CartRepository;
 use App\Repository\ProductRepository;
 use App\Repository\AccountRepository;
 use Doctrine\ORM\Mapping\Id;
+use Symfony\Component\HttpFoundation\Request;
 
 class PanierController extends AbstractController
 {
@@ -27,8 +28,13 @@ class PanierController extends AbstractController
     }
 
     #[Route('/panier', name: 'app_panier')]
-    public function index(/*int $id*/): Response
+    public function index(Request $request): Response
     {
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+
         $products = [];
         
         /*
