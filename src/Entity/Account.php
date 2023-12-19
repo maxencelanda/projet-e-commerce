@@ -6,10 +6,11 @@ use App\Repository\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
-class Account
+class Account implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -35,9 +36,13 @@ class Account
     #[ORM\OneToMany(mappedBy: 'account', targetEntity: Orders::class)]
     private Collection $orders;
 
+    #[ORM\OneToMany(mappedBy: 'account', targetEntity: Cart::class)]
+    private Collection $carts;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->carts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -97,14 +102,14 @@ class Account
         // $this->plainPassword = null;
     }
   
-    public function getRole(): ?Role
+    public function getRoles(): ?Role
     {
-        return $this->Role;
+        return $this->role;
     }
 
     public function setRole(?Role $role): static
     {
-        $this->Role = $Role;
+        $this->role = $role;
 
         return $this;
     }
@@ -150,6 +155,36 @@ class Account
             // set the owning side to null (unless already changed)
             if ($order->getAccount() === $this) {
                 $order->setAccount(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cart>
+     */
+    public function getCarts(): Collection
+    {
+        return $this->carts;
+    }
+
+    public function addCart(Cart $cart): static
+    {
+        if (!$this->carts->contains($cart)) {
+            $this->carts->add($cart);
+            $cart->setAccount($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCart(Cart $cart): static
+    {
+        if ($this->carts->removeElement($cart)) {
+            // set the owning side to null (unless already changed)
+            if ($cart->getAccount() === $this) {
+                $cart->setAccount(null);
             }
         }
 

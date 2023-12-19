@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Account;
+use App\Entity\Cart;
+use App\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,7 +12,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CartRepository;
 use App\Repository\ProductRepository;
 use App\Repository\AccountRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Id;
+use Symfony\Component\HttpFoundation\Request;
 
 class PanierController extends AbstractController
 {
@@ -27,24 +33,46 @@ class PanierController extends AbstractController
     }
 
     #[Route('/panier', name: 'app_panier')]
-    public function index(/*int $id*/): Response
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $products = [];
-        
-        /*
-        $cart = $this->cartRepository->findByUser($id);
-        if ($cart){
-            foreach($cart as $product){
-                array_push($products, $this->productRepository->find($cart->getIdProduct()));
-            }
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
         }
-        */
-        
-        
+
+        $user = $entityManager->getRepository(Account::class)->find($session->get('id'));
+        $cart = $entityManager->getRepository(Cart::class)->findBy(['account' => $user]);
+        $products = array();
+        $quantities = array();
+
+        foreach($cart as $c){
+            array_push($products, $c->getProduct());
+            array_push($quantities, $c->getQuantity());
+        }
+
         return $this->render(
             'panier/index.html.twig', [
-            'products' => $this->productRepository->findAll(),
-            //'products' => $products,
+            'products' => $products,
+            'quantities' => $quantities,
         ]);
+    }
+
+    #[Route('/panier/{id}/{c}', name: 'app_panier_remove')]
+    public function indexRemove($id, $c, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+
+        $user = $entityManager->getRepository(Account::class)->find($session->get('id'));
+        $cart = $entityManager->getRepository(Cart::class)->findBy(['account' => $user]);
+
+        $product = $entityManager->getRepository(Product::class)->find($id);
+        $cart[$c]->removeProduct($product);
+        $entityManager->remove($cart[$c]);
+        $entityManager->flush();
+
+        return $this->redirectToRoute("app_panier");
     }
 }

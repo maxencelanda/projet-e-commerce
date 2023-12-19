@@ -25,7 +25,14 @@ class AdminController extends AbstractController
     #[Route('/admin/create/product', name: 'app_admin_create_product')]
     public function createProduct(Request $request, EntityManagerInterface $entityManager): Response
     {
-        
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+        if ($session->get('role') != "Admin"){
+            return $this->redirectToRoute('accueil');
+        }
+
         $product = new Product();
         $form = $this->createForm(CreateProductType::class, $product);
         $form->handleRequest($request);
@@ -49,7 +56,14 @@ class AdminController extends AbstractController
     #[Route('/admin/edit/product', name: 'app_admin_edit_product')]
     public function editProduct(Request $request, EntityManagerInterface $entityManager, ProductRepository $productRepository): Response
     {
-        
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+        if ($session->get('role') != "Admin"){
+            return $this->redirectToRoute('accueil');
+        }
+
         $products = $productRepository->findAll();
 
         return $this->render('admin/editProduct.html.twig', [
@@ -61,7 +75,14 @@ class AdminController extends AbstractController
     #[Route('/admin/edit/product/{id}', name: 'app_admin_edit_product_id')]
     public function editProductId(Request $request, EntityManagerInterface $entityManager, $id): Response
     {
-        
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+        if ($session->get('role') != "Admin"){
+            return $this->redirectToRoute('accueil');
+        }
+
         $form = $this->createForm(EditProductType::class);
         $form->handleRequest($request);
         
@@ -94,7 +115,14 @@ class AdminController extends AbstractController
     #[Route('/admin/delete/product', name: 'app_admin_delete_product')]
     public function deleteProduct(Request $request, EntityManagerInterface $entityManager): Response
     {
-        
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+        if ($session->get('role') != "Admin"){
+            return $this->redirectToRoute('accueil');
+        }
+
         $form = $this->createForm(DeleteProductType::class);
         $form->handleRequest($request);
         
@@ -118,7 +146,14 @@ class AdminController extends AbstractController
     #[Route('/admin/create/category', name: 'app_admin_create_category')]
     public function createCategory(Request $request, EntityManagerInterface $entityManager): Response
     {
-        
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+        if ($session->get('role') != "Admin"){
+            return $this->redirectToRoute('accueil');
+        }
+
         $category = new Category();
         $form = $this->createForm(CreateCategoryType::class, $category);
         $form->handleRequest($request);
@@ -142,7 +177,14 @@ class AdminController extends AbstractController
     #[Route('/admin/edit/category/{id}', name: 'app_admin_edit_category_id')]
     public function editCategoryId(Request $request, EntityManagerInterface $entityManager, $id): Response
     {
-        
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+        if ($session->get('role') != "Admin"){
+            return $this->redirectToRoute('accueil');
+        }
+
         $form = $this->createForm(EditCategoryType::class);
         $form->handleRequest($request);
         
@@ -170,7 +212,14 @@ class AdminController extends AbstractController
     #[Route('/admin/edit/category', name: 'app_admin_edit_category')]
     public function editCategory(Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
     {
-        
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+        if ($session->get('role') != "Admin"){
+            return $this->redirectToRoute('accueil');
+        }
+
         $categories = $categoryRepository->findAll();
 
         return $this->render('admin/editCategory.html.twig', [
@@ -182,6 +231,13 @@ class AdminController extends AbstractController
     #[Route('/admin/delete/category', name: 'app_admin_delete_category')]
     public function deleteCategory(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+        if ($session->get('role') != "Admin"){
+            return $this->redirectToRoute('accueil');
+        }
         
         $form = $this->createForm(DeleteCategoryType::class);
         $form->handleRequest($request);

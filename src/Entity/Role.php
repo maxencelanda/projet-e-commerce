@@ -65,7 +65,7 @@ class Role
     {
         if ($this->accounts->removeElement($account)) {
             // set the owning side to null (unless already changed)
-            if ($account->getRole() === $this) {
+            if ($account->getRoles() === $this) {
                 $account->setRole(null);
             }
         }
