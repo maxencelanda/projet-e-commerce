@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Account;
 use App\Entity\Cart;
 use App\Entity\Product;
+use App\Form\TypeOrderType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,6 +46,9 @@ class PanierController extends AbstractController
         $products = array();
         $quantities = array();
 
+        $form = $this->createForm(TypeOrderType::class);
+        $form->handleRequest($request);
+
         foreach($cart as $c){
             array_push($products, $c->getProduct());
             array_push($quantities, $c->getQuantity());
@@ -54,6 +58,7 @@ class PanierController extends AbstractController
             'panier/index.html.twig', [
             'products' => $products,
             'quantities' => $quantities,
+            'form' => $form,
         ]);
     }
 
