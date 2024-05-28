@@ -243,9 +243,9 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted() and $form->isValid()){
-            $productData = $form->get('id')->getData();
-            $product = $entityManager->getRepository(Category::class)->find($productData);
-            $entityManager->remove($product);
+            $categData = $form->get('id')->getData();
+            $categ = $entityManager->getRepository(Category::class)->find($categData);
+            $entityManager->remove($categ);
             $entityManager->flush();
             return $this->render('admin/deleteCategory.html.twig', [
                 'form' => $form,
