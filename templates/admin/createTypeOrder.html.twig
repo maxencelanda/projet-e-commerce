@@ -11,11 +11,11 @@
     </div>
     <div class="col-span-4 mx-5">
         <div class="flex justify-center my-5 mx-auto text-2xl gap-10">
-            <a href="{{ path('app_admin_delete_product') }}" class="cursor-default font-bold">Produit</a>
-            <a href="{{ path('app_admin_delete_category') }}">Categorie</a>
-            <a href="{{ path('app_admin_delete_type') }}">TypeOrder</a>
+            <a href="{{ path('app_admin_create_product') }}">Produit</a>
+            <a href="{{ path('app_admin_create_category') }}">Categorie</a>
+            <a href="{{ path('app_admin_create_type') }}" class="cursor-default font-bold">TypeOrder</a>
         </div>
-        <div id="produit" class="my-10">
+        <div id="typeOrder" class="my-10">
             {{ form(form) }}
         </div>
         {% if success %}

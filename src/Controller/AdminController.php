@@ -10,14 +10,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Product;
 use App\Entity\Category;
+use App\Entity\TypeOrder;
 use App\Form\CreateProductType;
 use App\Form\CreateCategoryType;
+use App\Form\CreateTypeOrderType;
 use App\Form\DeleteProductType;
 use App\Form\DeleteCategoryType;
+use App\Form\DeleteTypeOrderType;
 use App\Form\EditCategoryType;
 use App\Form\EditProductType;
+use App\Form\EditTypeOrderType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Repository\TypeOrderRepository;
+use Doctrine\DBAL\Types\Type;
 
 class AdminController extends AbstractController
 {
@@ -254,6 +260,123 @@ class AdminController extends AbstractController
         }
 
         return $this->render('admin/deleteCategory.html.twig', [
+            'form' => $form,
+            'success' => '',
+        ]);
+    }
+
+    #[Route('/admin/create/type', name: 'app_admin_create_type')]
+    public function createTypeOrder(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+        if ($session->get('role') != "Admin"){
+            return $this->redirectToRoute('accueil');
+        }
+
+        $typeOrder = new TypeOrder();
+        $form = $this->createForm(CreateTypeOrderType::class, $typeOrder);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() and $form->isValid()){
+            $product = $form->getData();
+            $entityManager->persist($product);
+            $entityManager->flush();
+            return $this->render('admin/createTypeOrder.html.twig', [
+                'form' => $form,
+                'success' => "Type créé avec succès",
+            ]);
+        }
+
+        return $this->render('admin/createTypeOrder.html.twig', [
+            'form' => $form,
+            'success' => '',
+        ]);
+    }
+
+    #[Route('/admin/edit/type', name: 'app_admin_edit_type')]
+    public function editType(Request $request, EntityManagerInterface $entityManager, TypeOrderRepository $typeOrderRepository): Response
+    {
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+        if ($session->get('role') != "Admin"){
+            return $this->redirectToRoute('accueil');
+        }
+
+        $types = $typeOrderRepository->findAll();
+
+        return $this->render('admin/editTypeOrder.html.twig', [
+            'types' => $types,
+            'success' => '',
+        ]);
+    }
+
+    #[Route('/admin/edit/type/{id}', name: 'app_admin_edit_type_id')]
+    public function editTypeId(Request $request, EntityManagerInterface $entityManager, $id): Response
+    {
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+        if ($session->get('role') != "Admin"){
+            return $this->redirectToRoute('accueil');
+        }
+
+        $form = $this->createForm(EditTypeOrderType::class);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() and $form->isValid()){
+            $type = $entityManager->getRepository(TypeOrder::class)->find($id);
+            if (!$type) {
+                throw $this->createNotFoundException(
+                    'No type found for id '.$id
+                );
+            }
+            $type->setLibelle($form->get('libelle')->getData());
+            $type->setCouleur($form->get('couleur')->getData());
+            $entityManager->flush();
+            return $this->render('admin/editTypeOrderRedirect.html.twig', [
+                'form' => $form,
+                'success' => "Type modifié avec succès",
+            ]);
+        }
+
+        return $this->render('admin/editTypeOrderRedirect.html.twig', [
+            'form' => $form,
+            'success' => '',
+        ]);
+    }
+
+    #[Route('/admin/delete/type', name: 'app_admin_delete_type')]
+    public function deleteType(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $session = $request->getSession();
+        if (!$session->has('user')){
+            return $this->redirectToRoute('accueil');
+        }
+        if ($session->get('role') != "Admin"){
+            return $this->redirectToRoute('accueil');
+        }
+
+        $form = $this->createForm(DeleteTypeOrderType::class);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() and $form->isValid()){
+            $typeData = $form->get('id')->getData();
+            $type = $entityManager->getRepository(TypeOrder::class)->find($typeData);
+            $entityManager->remove($type);
+            $entityManager->flush();
+            return $this->render('admin/deleteTypeOrder.html.twig', [
+                'form' => $form,
+                'success' => "Type supprimé avec succès",
+            ]);
+        }
+
+        return $this->render('admin/deleteTypeOrder.html.twig', [
             'form' => $form,
             'success' => '',
         ]);
