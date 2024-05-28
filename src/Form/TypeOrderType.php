@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Orders;
 use App\Entity\TypeOrder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -22,7 +23,7 @@ class TypeOrderType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => TypeOrder::class,
+            'data_class' => Orders::class,
         ]);
     }
 }

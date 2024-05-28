@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Account;
 use App\Entity\Cart;
+use App\Entity\Orders;
 use App\Entity\Product;
+use App\Entity\TypeOrder;
 use App\Form\TypeOrderType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,12 +48,29 @@ class PanierController extends AbstractController
         $products = array();
         $quantities = array();
 
-        $form = $this->createForm(TypeOrderType::class);
-        $form->handleRequest($request);
-
         foreach($cart as $c){
             array_push($products, $c->getProduct());
             array_push($quantities, $c->getQuantity());
+        }
+
+        $form = $this->createForm(TypeOrderType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() and $form->isValid()){
+            
+            $typeOrder = $form->get("typeOrder")->getData();
+            $order = new Orders();
+            $order->setAccount($user);
+            $order->setDateOrder(new \DateTime('now'));
+            $order->setTypeOrder($typeOrder);
+            $entityManager->persist($order);
+            $entityManager->flush();
+            return $this->render('panier/index.html.twig', [
+                'products' => $products,
+                'quantities' => $quantities,
+                'form' => $form,
+                'success' => "Commande effectuée avec succès",
+            ]);
         }
 
         return $this->render(
@@ -59,6 +78,7 @@ class PanierController extends AbstractController
             'products' => $products,
             'quantities' => $quantities,
             'form' => $form,
+            'success' => "",
         ]);
     }
 
