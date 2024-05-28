@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route(path: '/index', name: 'login')]
+    #[Route(path: '/', name: 'login')]
     public function index(Request $request, AccountRepository $accountRepository,): Response
     {
         $user = null;
